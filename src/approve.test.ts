@@ -35,6 +35,18 @@ test("when a review is successfully created using pull-request-number", async ()
   );
 });
 
+test("when a review is successfully created with a body", async () => {
+  nock("https://api.github.com")
+    .post("/repos/hmarr/test/pulls/101/reviews")
+    .reply(200, { id: 1 });
+
+  await approve("gh-tok", new Context(), 101, "lgtm");
+
+  expect(core.info).toHaveBeenCalledWith(
+    expect.stringContaining("Approved pull request #101")
+  );
+});
+
 test("without a pull request", async () => {
   await approve("gh-tok", new Context());
 

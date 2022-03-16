@@ -6,7 +6,8 @@ import { Context } from "@actions/github/lib/context";
 export async function approve(
   token: string,
   context: Context,
-  prNumber?: number
+  prNumber?: number,
+  body?: string
 ) {
   if (!prNumber) {
     prNumber = context.payload.pull_request?.number;
@@ -29,6 +30,7 @@ export async function approve(
       repo: context.repo.repo,
       pull_number: prNumber,
       event: "APPROVE",
+      body: body
     });
     core.info(`Approved pull request #${prNumber}`);
   } catch (error) {
